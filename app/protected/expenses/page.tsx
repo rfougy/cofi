@@ -14,18 +14,18 @@ export default function Page() {
         .from('transactions')
         .select(
           `
-        *,
-        account:account_id (
-          id,
-          title
-        ),
-        user:user_id (
-          id,
-          first_name
-        )      
-      `
+            *,
+            account:account_id (
+              id,
+              title
+            ),
+            user:user_id (
+              id,
+              first_name
+            )      
+          `
         )
-        .lt('amount', 0);
+        .neq('category', 'income');
 
       if (error) console.error('Error fetching transactions:', error);
 
