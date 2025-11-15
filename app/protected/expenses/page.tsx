@@ -1,18 +1,19 @@
-'use client'
+'use client';
 
-import { createClient } from '@/lib/supabase/client'
-import { useEffect, useState } from 'react'
+import { createClient } from '@/lib/supabase/client';
+import { useEffect, useState } from 'react';
 
 export default function Page() {
-  const [expenses, setExpenses] = useState<any[] | null>(null)
+  const [expenses, setExpenses] = useState<any[] | null>(null);
 
-  const supabase = createClient()
+  const supabase = createClient();
 
   useEffect(() => {
     const getData = async () => {
-    const { data, error } = await supabase
-      .from('transactions')
-      .select(`
+      const { data, error } = await supabase
+        .from('transactions')
+        .select(
+          `
         *,
         account:account_id (
           id,
@@ -22,17 +23,16 @@ export default function Page() {
           id,
           first_name
         )      
-      `)
-      .lt('amount', 0);
+      `
+        )
+        .lt('amount', 0);
 
-      if (error) 
-        console.error('Error fetching transactions:', error)
+      if (error) console.error('Error fetching transactions:', error);
 
-      setExpenses(data)
-    }
-    getData()
-    
-  }, [])
+      setExpenses(data);
+    };
+    getData();
+  }, []);
 
-  return <pre>{JSON.stringify(expenses, null, 2)}</pre>
+  return <pre>{JSON.stringify(expenses, null, 2)}</pre>;
 }
