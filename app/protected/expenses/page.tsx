@@ -10,10 +10,20 @@ export default function Page() {
 
   useEffect(() => {
     const getData = async () => {
-      const { data, error } = await supabase
-        .from('transactions')
-        .select('*')
-        .lt('amount', 0);
+    const { data, error } = await supabase
+      .from('transactions')
+      .select(`
+        *,
+        account:account_id (
+          id,
+          title
+        ),
+        user:user_id (
+          id,
+          first_name
+        )      
+      `)
+      .lt('amount', 0);
 
       if (error) 
         console.error('Error fetching transactions:', error)

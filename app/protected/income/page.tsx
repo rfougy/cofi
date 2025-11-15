@@ -12,7 +12,18 @@ export default function Page() {
     const getData = async () => {
       const { data, error } = await supabase
         .from('transactions')
-        .select('*')
+        .select(`
+          *,
+          account:account_id (
+            id,
+            title,
+            distribution_percentage
+          ),
+          user:user_id (
+            id,
+            first_name
+          )      
+        `)
         .gt('amount', 0);
 
       if (error) 
